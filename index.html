@@ -7,6 +7,21 @@
     <title>Document</title>
 </head>
 <body>
+   
+    <p> Enter Calculation <input type="text" id="calc"></p>
+    <button onclick="getValues()">Compute</button>
+    <p id="output1"></p>
+
+    <script>
+        let getValues = function () {
+            calculation = document.getElementById("calc").value;
+            output1 = document.getElementById("output1");
+            output1.innerHTML = eval(calculation);
+        }
     
+      
+    
+        
+    </script>
 </body>
 </html>
