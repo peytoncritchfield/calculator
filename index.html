@@ -7,14 +7,46 @@
     <title>Document</title>
 
     <style> 
-      
+        body {
+            background-color: #020202;
+        }
         table, th, td { 
             border: 1px solid black; 
             border-collapse: collapse; 
             padding: 6px; 
             text-align:center; 
         } 
-        .zero {width: 100px;}
+        button {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            border-color: #020202;
+            background-color: #343434;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+
+        #zero {
+            width: 110px;
+            border-radius: 50px;
+        
+        }
+        #output {
+            height: 26px;
+            font-size: 24px;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .light-grey {
+            background-color: #A4A4A4;
+        }
+        .orange {
+            background-color: #FE9E09;
+        }
   
     </style> 
 
@@ -23,47 +55,123 @@
     
     <h1>Calculator</h1>
 
-    <p></p>
-    <table>
-        <tr>
-            <td>
-                <button>7</button>
-            </td>
-            <td>
-                <button>8</button>
-            </td>
-            <td>
-                <button>9</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button>4</button>
-            </td>
-            <td>
-                <button>5</button>
-            </td>
-            <td>
-                <button>6</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button>1</button>
-            </td>
-            <td>
-                <button>2</button>
-            </td>
-            <td>
-                <button>3</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <button class="zero">0</button>
-            </td>
-        </tr>
-    </table>
+    <p id="output"></p>
+    <p>
+        <table>
+            <tr>
+                <td>
+                    <button class="light-grey" onclick="clearValue()">C</button>
+                </td>
+                <td>
+                    <button class="light-grey">+/-</button>
+                </td>
+                <td>
+                    <button class="light-grey">%</button>
+                </td>
+                <td>
+                    <button class="orange" class="orange" onclick="setOperator('+')">+</button>
+                </td>
+            </tr>
+            <tr>        
+                <td>
+                    <button onclick="inputValue(7)">7</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(8)">8</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(9)">9</button>
+                </td>
+                <td>
+                    <button class="orange" onclick="setOperator('-')">-</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="inputValue(4)">4</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(5)">5</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(6)">6</button>
+                </td>
+                <td>
+                    <button class="orange" onclick="setOperator('*')">x</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button onclick="inputValue(1)">1</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(2)">2</button>
+                </td>
+                <td>
+                    <button onclick="inputValue(3)">3</button>
+                </td>
+                <td>
+                    <button class="orange" onclick="setOperator('/')">/</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="zero" onclick="inputValue(0)">0</button>
+                </td>
+                <td>
+                    <button onclick="inputValue('.')">.</button>
+                </td>
+                <td>
+                    <button class="orange" onclick="calculate()">=</button>
+                </td>
+            </tr>
+        </table>
+    </p>
 
+    <script>
+        let operation = {
+            before: "",
+            operator: "",
+            after: ""
+        }
+
+        let output = document.getElementById("output");
+
+        function inputValue (value) {
+            
+            if (operation.after.length >= 1) {
+                operation.after += value;
+            }
+            
+            if (operation.before.length && !operation.after.length) {
+                output.innerHTML = "";
+                operation.after += value;
+            }
+            
+            output.innerHTML += value;
+            console.log(operation);
+            
+        }
+
+        function setOperator (operator) {
+            operation.before = output.innerHTML;
+            operation.operator = operator;
+        }
+
+        function clearValue () {
+            output.innerHTML = "";
+            
+        }
+
+        function calculate () {
+            let result = `${operation.before} ${operation.operator} ${operation.after}`;
+            output.innerHTML = eval(result);
+            operation = {
+            before: "",
+            operator: "",
+            after: ""
+            }
+        }
+    </script>
 </body>
 </html>
