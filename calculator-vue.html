@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <style>
+       body {
+            background-color: #020202;
+        }
+        .button {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            border-color: #020202;
+            background-color: #343434;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        .button0 {
+            height: 50px;
+            width: 110px;
+            border-radius: 50px;
+            border-color: #020202;
+            background-color: #343434;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+        #output {
+            height: 26px;
+            font-size: 24px;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        button:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+       
+        <p id="output">
+            {{output}}
+        </p>
+       
+        <table>
+            <template v-for="(button, index) in inputData">
+                <template v-if="index % 4 == 0">
+                    <tr>
+                </template>
+                    <td v-if="button.value != 0">
+                        <button class="button" v-on:click="buttonClick(button)" :style="`background-color: ${buttonColor(button.type)}`">
+                            {{button.value}}
+                        </button>
+                    </td>
+                    <td v-if="button.value == 0" colspan="2">
+                        <button class="button0" v-on:click="" :style="`background-color: ${buttonColor(button.type)}`">
+                            {{button.value}}
+                        </button>
+                    </td>
+                <template v-if="index % 4 == 0">
+                    </tr>
+                </template>
+
+            </template>
+        </table>
+
+
+
+
+
+
+
+    </div>
+
+    <script>
+        var app = new Vue({
+        el: '#app',
+        methods: {
+            buttonColor(type) {
+                if (type === "number") {
+                    return "#343434";
+                }
+                if (type === "operator" || type === "conclusion") {
+                    return "#FE9E09";
+                }
+                if (type === "miscellaneous") {
+                    return "#A4A4A4";
+                }
+                if (!type) {
+                    return "red"
+                }
+            },
+            buttonClick(button) {
+                
+                if (button.type === "operator") {
+                    this.operation.operator = button.value;
+                }
+                    
+                if (button.type === "number") {
+                    this.output += button.value;
+                    if (this.output && !this.operation.operator) {
+                        this.operation.before = this.output
+                    }
+                    if (this.output && this.operation.operator) {
+                        this.output = "";
+                        this.output += button.value;
+                        this.operation.after = this.output;
+                    }
+                }
+                if (button.value === "=") {
+                    let result = `${this.operation.before} ${this.operation.operator} ${this.operation.after}`;
+                    this.output = eval(result);
+                    this.operation = {
+                    before: "",
+                    operator: "",
+                    after: ""
+                    }
+                
+                }
+                console.log(this.operation)
+
+                
+            }
+        },
+        created() {
+            this.inputData = this.input.numbers;
+        },
+        data: {
+            inputData: [],
+            output: "",
+            operation: {
+                before: "",
+                operator: "",
+                after: ""
+            },
+            input: {
+                "numbers": [
+                    {
+                        "value": "C",
+                        "type": "miscellaneous"
+                    },
+                    {
+                        "value": "+/-",
+                        "type": "miscellaneous"
+                    },
+                    {
+                        "value": "%",
+                        "type": "miscellaneous"
+                    },
+                    {
+                        "value": "+",
+                        "type": "operator"
+                    },
+                    {
+                        "value": "7",
+                        "type": "number"
+                    },
+                    {
+                        "value": "8",
+                        "type": "number"
+                    },
+                    {
+                        "value": "9",
+                        "type": "number"
+                    },
+                    {
+                        "value": "-",
+                        "type": "operator"
+                    },{
+                        "value": "4",
+                        "type": "number"
+                    },
+                    {
+                        "value": "5",
+                        "type": "number"
+                    },
+                    {
+                        "value": "6",
+                        "type": "number"
+                    },
+                    {
+                        "value": "x",
+                        "type": "operator"
+                    },
+                    {
+                        "value": "1",
+                        "type": "number"
+                    },
+                    {
+                        "value": "2",
+                        "type": "number"                   
+                    },
+                    {
+                        "value": "3",
+                        "type": "number"                    
+                    },
+                    {
+                        "value": "/",
+                        "type": "operator"
+                    },
+                    {
+                        "value": "0",
+                        "type": "number"                    
+                    },
+                    {
+                        "value": ".",
+                        "type": "number"
+                    },
+                    {
+                        "value": "=",
+                        "type": "conclusion"
+                    }
+                ]
+            }
+        }
+        })
+    </script>
+</body>
+</html>
